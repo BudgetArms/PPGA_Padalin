@@ -1,5 +1,5 @@
 #pragma once
-#include "Globals.h"
+#include "../Globals.h"
 
 #include <memory>
 #include <iostream>
@@ -27,7 +27,9 @@ public:
 	Shape	GetShape() const;
 	Point2f GetPosition() const;
 	Color4f GetColor() const;
-	Circlef GetHitBox() const;
+
+	//Circlef GetHitBox() const;
+	Rectf GetHitBox() const;
 
 	void SetSize(float newSize);
 	void SetShape(Shape newShape);

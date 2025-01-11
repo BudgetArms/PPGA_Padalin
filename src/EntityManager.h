@@ -2,6 +2,12 @@
 
 #include <vector>
 #include <unordered_map>
+#include <memory>
+
+// ???
+#include <string>
+
+#include "../structs.h"
 
 class Entity;
 class Player;

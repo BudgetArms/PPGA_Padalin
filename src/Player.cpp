@@ -1,9 +1,10 @@
-
-
 #include "Player.h"
+#include <SDL.h>
 
 Player::Player() :
-	ShootingEntity(Shape::Circle, position, 3, 300.f, 10.f),
+	ShootingEntity(Shape::Circle, g_StartPosition, 3, 300.f, 10.f),
+	m_sMapbKeyDown{ nullptr },
+	m_Speed{ 100 }
 {
 	std::cout<< "Created Player" << "\n";
 
@@ -76,15 +77,6 @@ void Player::Update(float elapsedSec)
 
 
 }
-
-
-
-
-
-
-
-
-
 
 
 

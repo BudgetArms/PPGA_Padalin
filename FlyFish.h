@@ -10,7 +10,9 @@ class ThreeBlade;
 class Motor;
 class GANull;
 
+
 constexpr float DEG_TO_RAD = 3.141592f / 180.0f;
+
 
 template <typename Derived, int DataSize>
 class GAElement

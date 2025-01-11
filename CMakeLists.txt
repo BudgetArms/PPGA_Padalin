@@ -6,46 +6,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(GEOAProject)
 
 
-IF(FALSE)
+file(GLOB SOURCES 
+    "FlyFish.cpp" "Game.cpp" "structs.cpp" "utils.cpp" "utilsFly.cpp" "Globals.cpp" "src/*.cpp")
 
-
-# Add source files
-add_executable(GEOAProject "FlyFish.cpp" "Game.cpp" "structs.cpp" "utils.cpp" "main.cpp")
-
-elseif(FALSE)
-
-file(GLOB_RECURSE INTERNAL_INCLUDE_HEADERS
-     "{CMAKAE_CURRENT_SOURCE_DIR}/src/*.h"
-)
- 
-file(GLOB_RECURSE INTERNAL_INCLUDE_SOURCES
-     "{CMAKAE_CURRENT_SOURCE_DIR}/src/*.cpp"
-)
-
-add_executable(${PROJECT_NAME} main.cpp )
-
-else()
-
-
-IF(FALSE)
-
-file(GLOB_RECURSE INTERNAL_INCLUDE_HEADERS
-     "{CMAKAE_CURRENT_SOURCE_DIR}/src/*.h"
-)
-file(GLOB_RECURSE INTERNAL_INCLUDE_SOURCES
-     "{CMAKAE_CURRENT_SOURCE_DIR}/src/*.cpp"
-)
-
-endif()
-
-add_executable(${PROJECT_NAME} "FlyFish.cpp" "Game.cpp" "structs.cpp" "utils.cpp" "Globals.cpp" "main.cpp")
-#add_executable(${PROJECT_NAME} "FlyFish.cpp" "Game.cpp" "structs.cpp" "utils.cpp" "main.cpp")
-#add_executable(${PROJECT_NAME} "FlyFish.cpp" "Game.cpp" "utils.cpp" "main.cpp")
-
-#target_include_directories(${PROJECT_NAME} ./src) 
-#target_link_directories(${PROJECT_NAME} PUBLIC PUBLIC ./src)
-
-endif()
+add_executable( ${PROJECT_NAME} "main.cpp" ${SOURCES} )
 
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)

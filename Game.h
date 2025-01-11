@@ -1,12 +1,15 @@
 #pragma once
 
+#include <memory>
 #include "Globals.h"
 
 #include "SDL.h"
 #include "SDL_opengl.h"
 
+//#include "src/Player.h"
+#include "src/Object.h"
 
-class Player;
+//class Player;
 
 class InputManager;
 class EntityManager;
@@ -65,11 +68,16 @@ private:
 	// member variables
 
 
+	Object fireObject{ Shape::Circle, Point2f(100, 100) };
 
 	// managers:
 	//std::unique_ptr<InputManager> m_uInputManager;
 	//std::shared_ptr<EntityManager> m_sEntityManager;
 
+	//Player m_Player;
 	//std::unique_ptr<Player> m_Player;
 
 };
+
+
+

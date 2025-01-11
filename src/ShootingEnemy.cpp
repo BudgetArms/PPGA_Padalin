@@ -1,5 +1,5 @@
 #include "ShootingEnemy.h"
-#include "Globals.h"
+#include "../Globals.h"
 
 
 ShootingEnemy::ShootingEnemy(const Point2f& position) :

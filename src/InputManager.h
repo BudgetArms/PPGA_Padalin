@@ -2,7 +2,9 @@
 
 #include <SDL.h>
 #include <vector>
-#include "Sprite.h"
+
+// not needed, ...
+//#include "Sprite.h"
 
 #include <memory>
 #include <unordered_map>

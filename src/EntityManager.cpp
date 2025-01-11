@@ -103,39 +103,11 @@ void EntityManager::Update(float elapsedSec)
 				// enemy gets hit by bullet from player
 				for (auto& playerBullet : arrPlayerBullets)
 				{
-
 					if (utils::IsOverlapping(playerBullet->GetHitBox(), uEnemy->GetHitBox()))
 					{
 						uEnemy->TakeDamage(playerBullet->GetDamage());
 						playerBullet->Destroy();
 					}
-
-					// children of spawner
-					if (auto* pSpawner{ dynamic_cast<EnemySpawner*>(uEnemy.get()) }; pSpawner != nullptr)
-					{
-						auto arrEnemiesSpawner = pSpawner->GetSharedEnemies();
-
-						// enemy gets hit by bullet from player
-						for (auto& spawnerEnemy : *arrEnemiesSpawner)
-						{
-
-							spawnerEnemy->SetPlayerLocation(uPlayer->GetPosition());
-
-							if (utils::IsOverlapping(playerBullet->GetHitBox(), spawnerEnemy->GetHitBox()))
-							{
-								spawnerEnemy->TakeDamage(playerBullet->GetDamage());
-								playerBullet->Destroy();
-							}
-
-							if (utils::IsOverlapping(playerHitbox, spawnerEnemy->GetHitBox()))
-							{
-								uPlayer->TakeDamage(100); // gets taken damage
-								uPlayer->SetPosition(g_StartPosition);
-								return;
-							}
-						}
-					}
-
 				}
 
 

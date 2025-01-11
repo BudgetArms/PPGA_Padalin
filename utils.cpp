@@ -5,8 +5,17 @@
 #include <SDL_opengl.h>
 #include "utils.h"
 
+#include "structs.h"
+
 
 #pragma region OpenGLDrawFunctionality
+
+
+void utils::SetColor(float r, float g, float b, float a = 1.f )
+{
+	glColor4f( r, g, b, a );
+}
+
 void utils::SetColor( const Color4f& color )
 {
 	glColor4f( color.r, color.g, color.b, color.a );
@@ -275,4 +284,118 @@ void utils::FillPolygon( const Point2f *pVertices, size_t nrVertices )
 	}
 	glEnd( );
 }
+
+
 #pragma endregion OpenGLDrawFunctionality
+
+
+#pragma region CollisionFunctionality
+
+float utils::GetDistance(float x1, float y1, float x2, float y2)
+{
+	return (sqrtf((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+}
+
+float utils::GetDistance(const Point2f& p1, const Point2f& p2)
+{
+	return GetDistance(p1.x, p1.y, p2.x, p2.y);
+}
+
+bool utils::IsPointInRect(const Point2f& p, const Rectf& r)
+{
+	return false;
+
+	return (p.x >= r.left &&
+		p.x <= r.left + r.width &&
+		p.y >= r.bottom &&
+		p.y <= r.bottom + r.height);
+}
+
+bool utils::IsOverlapping(const Point2f& a, const Point2f& b, const Rectf& r)
+{
+	return false;
+
+
+	// if one of the line segment end points is in the rect
+	if (utils::IsPointInRect(a, r) || utils::IsPointInRect(b, r))
+	{
+		return true;
+	}
+
+	HitInfo hitInfo{};
+	Point2f vertices[]{ Point2f {r.left, r.bottom},
+		Point2f{ r.left + r.width, r.bottom },
+		Point2f{ r.left + r.width, r.bottom + r.height },
+		Point2f{ r.left, r.bottom + r.height } };
+
+	return Raycast(vertices, 4, a, b, hitInfo);
+}
+
+bool utils::IsOverlapping(const Rectf& r1, const Rectf& r2)
+{
+	return false;
+
+	// If one rectangle is on left side of the other
+	if ((r1.left + r1.width) < r2.left || (r2.left + r2.width) < r1.left)
+	{
+		return false;
+	}
+
+	// If one rectangle is under the other
+	if (r1.bottom > (r2.bottom + r2.height) || r2.bottom > (r1.bottom + r1.height))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool utils::IsPointInPolygon(const Point2f& p, const std::vector<Point2f>& vertices)
+{
+
+	return false;
+}
+
+bool utils::IsPointInPolygon(const Point2f& p, const Point2f* vertices, size_t nrVertices)
+{
+	
+	return false;
+}
+
+bool utils::IntersectLineSegments(const Point2f& p1, const Point2f& p2, const Point2f& q1, const Point2f& q2, float& outLambda1, float& outLambda2, float epsilon)
+{
+
+	return false;
+}
+
+bool utils::Raycast(const std::vector<Point2f>& vertices, const Point2f& rayP1, const Point2f& rayP2, HitInfo& hitInfo)
+{
+
+	return false;
+}
+
+bool utils::Raycast(const Point2f* vertices, const size_t nrVertices, const Point2f& rayP1, const Point2f& rayP2, HitInfo& hitInfo)
+{
+
+	return false;
+}
+
+bool  utils::IsPointOnLineSegment(const Point2f& p, const Point2f& a, const Point2f& b)
+{
+	return false;
+}
+
+float  utils::DistPointLineSegment(const Point2f& p, const Point2f& a, const Point2f& b)
+{
+
+	return false;
+}
+
+bool utils::IntersectRectLine(const Rectf& r, const Point2f& p1, const Point2f& p2, float& intersectMin, float& intersectMax)
+{
+
+	return false;
+}
+
+#pragma endregion CollisionFunctionality
+

@@ -7,17 +7,18 @@
 
 #include "Game.h"
 
+#include "FlyFish.h"
 #include "Globals.h"
 #include "utils.h"
 
 #include "src/Object.h"
-#include "src/Sprite.h"
-#include "src/MovingEnemy.h"
-#include "src/Player.h"
-#include "src/ShootingEnemy.h"
+//#include "src/Sprite.h"
+//#include "src/MovingEnemy.h"
+//#include "src/Player.h"
+//#include "src/ShootingEnemy.h"
 
-#include "src/InputManager.h"
-#include "src/EntityManager.h"
+//#include "src/InputManager.h"
+//#include "src/EntityManager.h"
 
 
 
@@ -28,9 +29,12 @@ Game::Game(const Window& window)
 	, m_pContext{ nullptr }
 	, m_Initialized{ false }
 	, m_MaxElapsedSeconds{ 0.1f }
+	//, m_Player { std::make_unique<Player> () }
+	//, m_Player{ Player()}
 {
 	g_Window = m_Viewport;
 	g_StartPosition = Point2f(100, 200);
+
 
 	InitializeGameEngine();
 	InitializeGame();
@@ -228,8 +232,15 @@ void Game::InitializeGame()
 
 void Game::Update(float elapsedSec)
 {
+	//GAElement<, 20> object;
+	TwoBlade line { 1.f, 1.f, 1.f, 1.f, 1.f, 1.f };
+	ThreeBlade point{ 1, 2, 3, 1 };
 
+	Rectf rect{ 10, 10, 100, 100 };
 
+	
+	
+	
 }
 
 void Game::Draw() const
@@ -241,6 +252,10 @@ void Game::Draw() const
 	// draw ellipse at (0,0), radius 30, outline 3
 	utils::DrawEllipse(Ellipsef(Point2f(0, 0), 30, 30), 3);
 
+	//Object testObject{ Shape::Circle, Point2f(100, 100) };
+	//testObject.Draw();
+
+	fireObject.Draw();
 
 }
 
@@ -251,6 +266,12 @@ void Game::Draw() const
 
 void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent& e)
 {
+
+	if (e.keysym.sym == SDLK_e)
+		exit(0);
+
+
+	//if(e.keysym.sym == SDLK_W)
 
 
 }

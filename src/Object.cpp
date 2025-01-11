@@ -1,5 +1,6 @@
 #include "Object.h"
-#include "utils.h"
+#include "../structs.h"
+#include "../utils.h"
 
 
 Object::Object(Shape shape, const Point2f& position) :
@@ -12,6 +13,11 @@ Object::Object(Shape shape, const Point2f& position) :
 {
 }
 
+#if True
+
+void Object::Draw() const {}
+
+#else
 
 void Object::Draw() const
 {
@@ -44,6 +50,8 @@ void Object::Draw() const
 
 }
 
+#endif
+
 
 #pragma region Getters/Setters
 
@@ -74,11 +82,21 @@ Color4f Object::GetColor() const
 	return m_Color;
 }
 
+#if true
+
+Rectf Object::GetHitBox() const
+{
+	return  Rectf(m_Position.x - m_Size / 2.f, m_Position.y - m_Size / 2.f, m_Size, m_Size);
+}
+
+#else
+
 Circlef Object::GetHitBox() const
 {
 	return Circlef(m_Position, m_Size);
 }
 
+#endif
 
 void Object::SetSize(float newSize)
 {

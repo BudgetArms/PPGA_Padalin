@@ -1,6 +1,6 @@
-#include "Globals.h"
+#include "../Globals.h"
 #include "InputManager.h"
-#include "AnimatedSprite.h"
+//#include "AnimatedSprite.h"
 
 
 InputManager::InputManager() :
