@@ -5,6 +5,7 @@
 
 namespace FlyUtils
 {
+	
 
 	float GetDistance(OneBlade& plane1,		OneBlade& plane2);
 	float GetDistance(TwoBlade& line1,		TwoBlade& line2);

@@ -1,4 +1,4 @@
-#include "utilsFly.h"
+#include "FlyUtils.h"
 
 #include <iostream>
 
@@ -45,6 +45,13 @@ float FlyUtils::GetDistance(OneBlade& plane, ThreeBlade& point)
 
 
 }
+
+float FlyUtils::GetDistance(TwoBlade& line, ThreeBlade& point)
+{
+
+
+
+} 
 
 float FlyUtils::GetDistance(TwoBlade& line, ThreeBlade& point)
 {

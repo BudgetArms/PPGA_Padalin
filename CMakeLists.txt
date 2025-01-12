@@ -7,7 +7,15 @@ project(GEOAProject)
 
 
 file(GLOB SOURCES 
-    "FlyFish.cpp" "Game.cpp" "structs.cpp" "utils.cpp" "utilsFly.cpp" "Globals.cpp" "src/*.cpp")
+    "FlyFish.cpp" 
+    "Game.cpp" 
+    "structs.cpp" 
+    "Utils.cpp" 
+    "FlyStructs.cpp"
+    "FlyUtils.cpp"
+    "Globals.cpp" 
+    "src/*.cpp"
+)
 
 add_executable( ${PROJECT_NAME} "main.cpp" ${SOURCES} )
 
