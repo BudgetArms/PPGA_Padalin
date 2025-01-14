@@ -6,13 +6,14 @@
 #include "SDL.h"
 #include "SDL_opengl.h"
 
-//#include "src/Player.h"
-#include "src/Object.h"
+#include "src/Player.h"
+#include "src/Pillar.h"
+#include "src/Enemy.h"
+#include "src/Coin.h"
+#include "src/PickUp.h"
+#include "src/PickUpPower.h"
 
-//class Player;
 
-class InputManager;
-class EntityManager;
 
 class Game
 {
@@ -67,15 +68,15 @@ private:
 
 	// member variables
 
+	std::unique_ptr<Player> m_uPlayer;
+	ThreeBlade	m_PlayerMirror;
+	Pillar		m_Pillar;
+	Enemy		m_Enemy;
+	TwoBlade	m_Line;
+	Coin		m_Coin;
+	PickUpPower	m_PickUp;
 
-	Object fireObject{ Shape::Circle, Point2f(100, 100) };
-
-	// managers:
-	//std::unique_ptr<InputManager> m_uInputManager;
-	//std::shared_ptr<EntityManager> m_sEntityManager;
-
-	//Player m_Player;
-	//std::unique_ptr<Player> m_Player;
+	float m_CoinSpawnDelay;
 
 };
 

@@ -1,15 +1,16 @@
-﻿cmake_minimum_required(VERSION 3.8)
+﻿cmake_minimum_required(VERSION 3.12)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(GEOAProject)
 
 
 file(GLOB SOURCES 
+    "main.cpp"
     "FlyFish.cpp" 
     "Game.cpp" 
-    "structs.cpp" 
+    "Structs.cpp" 
     "Utils.cpp" 
     "FlyStructs.cpp"
     "FlyUtils.cpp"
@@ -17,13 +18,7 @@ file(GLOB SOURCES
     "src/*.cpp"
 )
 
-add_executable( ${PROJECT_NAME} "main.cpp" ${SOURCES} )
-
-
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-    message("C++20 BEING USED\n\n")
-    set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
-endif()
+add_executable( ${PROJECT_NAME} ${SOURCES} )
 
 
 # Simple Directmedia Layer
@@ -53,12 +48,14 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL SDL_TTF opengl32)
 
+
 file(GLOB_RECURSE DLL_FILES
     "${SDL_DIR}/lib/*.dll"
     "${SDL_DIR}/lib/*.manifest"
     "${SDL_TTF_DIR}/lib/*.dll"
     "${SDL_TTF_DIR}/lib/*.manifest"
 )
+
 
 foreach(DLL ${DLL_FILES})
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

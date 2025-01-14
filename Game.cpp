@@ -11,15 +11,7 @@
 #include "Globals.h"
 #include "utils.h"
 
-#include "src/Object.h"
-//#include "src/Sprite.h"
-//#include "src/MovingEnemy.h"
-//#include "src/Player.h"
-//#include "src/ShootingEnemy.h"
-
-//#include "src/InputManager.h"
-//#include "src/EntityManager.h"
-
+#include "src/Player.h"
 
 
 Game::Game(const Window& window)
@@ -29,11 +21,17 @@ Game::Game(const Window& window)
 	, m_pContext{ nullptr }
 	, m_Initialized{ false }
 	, m_MaxElapsedSeconds{ 0.1f }
-	//, m_Player { std::make_unique<Player> () }
-	//, m_Player{ Player()}
+	, m_uPlayer { nullptr }
+	, m_PlayerMirror { }
+	, m_Pillar { }
+	, m_Enemy { }
+	, m_Line{ TwoBlade() }
+	, m_Coin{ ThreeBlade(100, 200, 0) }
+	, m_PickUp{ ThreeBlade(-100, -100, 0)}
 {
 	g_Window = m_Viewport;
 	g_StartPosition = Point2f(100, 200);
+
 
 
 	InitializeGameEngine();
@@ -65,7 +63,9 @@ void Game::InitializeGameEngine()
 		SDL_WINDOWPOS_CENTERED,
 		int(m_Window.width),
 		int(m_Window.height),
-		SDL_WINDOW_OPENGL);
+		SDL_WINDOW_OPENGL
+	);
+
 	if (m_pWindow == nullptr)
 	{
 		std::cerr << "BaseGame::Initialize( ), error when calling SDL_CreateWindow: " << SDL_GetError() << std::endl;
@@ -220,27 +220,72 @@ void Game::ClearBackground() const
 
 void Game::InitializeGame()
 {
-	std::cout << g_Window.width << std::endl;
+	//std::cout << "Window Width:  " << g_Window.width  << "\n";
+	//std::cout << "Window Height: " << g_Window.height << "\n";
+	std::cout << "KeyBinds:" << "\n";
+	std::cout << "Forward: W or Z, Backwards: S, Left: A or Q, Right: D" << "\n";
+	std::cout << "LMB: " << "Grapple, grapples in the direction your mouse is to the closes wall" << "\n";
+	std::cout << "MMB: " << "Reflection, does a point reflection on the player witht he green pillar in the middle" << "\n";
+	std::cout << "RMB: " << "Rotation, rotates you around the enemy, this is not a animation" << "\n";
+	std::cout << "\n";
+	std::cout << "Goal: " << "Pickup 5  Coin " << "\n";
 
-	//m_uInputManager = std::make_unique<InputManager>();
-	//m_sEntityManager = (m_uInputManager ? std::make_shared<EntityManager>(m_uInputManager->GetSharedKeyDownMap()) : nullptr);
 
-	//m_Player = std::make_unique<Player>(Point2f(200, 100), m_uInputManager->GetSharedKeyDownMap());
+	m_Pillar.SetPos(ThreeBlade(g_Window.width / 2, g_Window.height / 2, 0));
 
+	m_uPlayer = std::make_unique<Player>(ThreeBlade(200, g_Window.height/2.f, 0), 
+											10, Color4f(1.f, 1.f, 1.f, 1.f));
+	m_uPlayer->SetPillar(m_Pillar.GetPos());
+	m_Enemy.SetPos(ThreeBlade(g_Window.width - 500, g_Window.height - 400, 0));
+	m_Enemy.SetTarget(m_uPlayer.get());
+
+	m_PickUp.SetPos(ThreeBlade(float(rand() % int(g_Window.width)), float(rand() % int(g_Window.height)), 0));
+
+	auto rejPlayerPillar{ (m_Pillar.GetPos() * m_uPlayer->GetPos() * ~m_Pillar.GetPos()).Grade3() };
+	m_PlayerMirror = rejPlayerPillar;
 
 }
 
 void Game::Update(float elapsedSec)
 {
-	//GAElement<, 20> object;
-	TwoBlade line { 1.f, 1.f, 1.f, 1.f, 1.f, 1.f };
-	ThreeBlade point{ 1, 2, 3, 1 };
 
-	Rectf rect{ 10, 10, 100, 100 };
+	m_uPlayer->Update(elapsedSec);
+	m_Enemy.Update(elapsedSec);
+	m_Coin.Update(elapsedSec);
+	m_PickUp.Update(elapsedSec);
 
-	
-	
-	
+	if (m_Coin.IsOverlapping(m_uPlayer->GetPos()))
+	{
+		m_uPlayer->IncrementScore();
+		m_Coin = Coin(ThreeBlade(float(rand() % int(g_Window.width)),	
+								float(rand() % int(g_Window.height)), 0)); 	
+	} 
+
+	if (m_PickUp.IsOverlapping(m_uPlayer->GetPos()))
+	{
+		if (m_PickUp.IsDash())
+			m_uPlayer->ActivateDash();
+		else
+			m_uPlayer->ActivateMirror();
+
+		m_PickUp = PickUpPower(ThreeBlade(float(rand() % int(g_Window.width)),	
+								float(rand() % int(g_Window.height)), 0));
+	}
+
+
+	auto rejPlayerPillar{ (m_Pillar.GetPos() * m_uPlayer->GetPos() * ~m_Pillar.GetPos()).Grade3() };
+	m_PlayerMirror = rejPlayerPillar;
+
+
+	ThreeBlade origin{ 0, 0, 0, 1 };
+	m_Line = origin & m_PlayerMirror;
+
+	if ((m_uPlayer->GetPos() & m_Enemy.GetPos()).Norm() < 10)
+	{
+		std::cout << "Game Over" << "\n";
+		exit(0);
+	}
+
 }
 
 void Game::Draw() const
@@ -249,13 +294,21 @@ void Game::Draw() const
 	ClearBackground();
 	glClearColor(1.f, 1.f, 1.f, 1.f);
 
-	// draw ellipse at (0,0), radius 30, outline 3
-	utils::DrawEllipse(Ellipsef(Point2f(0, 0), 30, 30), 3);
+	//utils::DrawEllipse(Ellipsef(Point2f(200, 0), 30, 30), 3);
+	
+	
+	m_Pillar.Draw();
+	m_Coin.Draw();
+	m_PickUp.Draw();
 
-	//Object testObject{ Shape::Circle, Point2f(100, 100) };
-	//testObject.Draw();
+	utils::SetColor(0, 0.f, 1.f, 1.f);
+	utils::FillRect(m_PlayerMirror[0] - 10, m_PlayerMirror[1] - 10, 20, 20);
 
-	fireObject.Draw();
+	
+
+	m_uPlayer->Draw();
+	m_Enemy.Draw();
+
 
 }
 
@@ -267,11 +320,15 @@ void Game::Draw() const
 void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent& e)
 {
 
-	if (e.keysym.sym == SDLK_e)
+	if (e.keysym.sym == SDLK_ESCAPE)
 		exit(0);
 
+	if (e.keysym.sym == SDLK_e)
+		m_uPlayer->ActivateMirror();
+ 
 
-	//if(e.keysym.sym == SDLK_W)
+	if (e.keysym.sym == SDLK_r)
+		m_uPlayer->ActivateDash();
 
 
 }
@@ -290,14 +347,12 @@ void Game::ProcessMouseMotionEvent(const SDL_MouseMotionEvent& e)
 
 void Game::ProcessMouseDownEvent(const SDL_MouseButtonEvent& e)
 {
-
-
+	m_uPlayer->HandleMouseInput(e);
 }
 
 void Game::ProcessMouseUpEvent(const SDL_MouseButtonEvent& e)
 {
-
-
+	m_uPlayer->HandleMouseInput(e);
 }
 
 #pragma endregion Events

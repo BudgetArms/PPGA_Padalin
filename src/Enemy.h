@@ -1,30 +1,33 @@
 #pragma once
-#include "../Globals.h"
-#include "Entity.h"
 
+#include "../Utils.h"
+#include "../FlyUtils.h"
 
-class Enemy : public Entity
+class Player;
+
+class Enemy
 {
 public:
+	Enemy();
+	Enemy(const ThreeBlade& position, Player* target = nullptr);
 
-	Enemy(const Point2f& position, const Color4f& color = Color4f(1.f, 1.f, 1.f, 1.f) );
-
-	Enemy(Enemy&)				= delete;
-	Enemy(Enemy&&)				= delete;
-	Enemy operator&=(Enemy&)	= delete;
-	Enemy operator&=(Enemy&&)	= delete;
-
-	virtual ~Enemy() {};
+	void Draw() const;
+	void Update(float elapsedSec);
 
 
-	// go to player
-	//virtual void Update(float elapsedSec) override;
+	const ThreeBlade& GetPos() const;
+	void SetPos(const ThreeBlade& pos);
+	void SetTarget(Player* target);
+
+
 
 private:
+	ThreeBlade	m_Position;
+	Color4f		m_Color;
+	Player*		m_Target;
 
+	float		m_Speed;
 
+	TwoBlade m_Line;
 
 };
-
-
-
